@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test
 
 object Spec {
     @Test
-    fun `counts the number of times the depth increases`() {
+    fun `counts the number of times the depth increases over a three-reading window`() {
         val depths = sequenceOf(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)
 
-        assertThat(countDepthIncreases(depths), equalTo(7))
+        assertThat(countDepthIncreases(depths), equalTo(5))
     }
 }
