@@ -19,21 +19,21 @@ value class Depth(private val value: Int) {
 private val Depth.defined: Boolean
     get() = this != Depth.NULL
 
-fun countDepthIncreases(depths: Sequence<Depth>): Int =
+fun countDepthIncreases(depths: List<Depth>): Int =
     countDepthIncreases(permute(depths.windowed(3) { it.sum() }))
 
 private fun List<Depth>.sum() = this.reduce(Depth::plus)
 
 
 @JvmName("countDepthIncreases_private")
-private fun countDepthIncreases(depths: Sequence<Pair<Depth, Depth>>): Int =
+private fun countDepthIncreases(depths: List<Pair<Depth, Depth>>): Int =
     depths
         .filter { (a, b) -> a.defined && a < b } // Find the increases
         .count()
 
 
-private fun permute(depths: Sequence<Depth>): Sequence<Pair<Depth, Depth>> =
-    sequenceOf(Depth.NULL).plus(depths).zip(depths)
+private fun permute(depths: List<Depth>): List<Pair<Depth, Depth>> =
+    listOf(Depth.NULL).plus(depths).zip(depths)
 
 
 fun main() {
@@ -41,5 +41,5 @@ fun main() {
         .map(::Depth)
         .toList()
 
-    println(countDepthIncreases(depths.asSequence()))
+    println(countDepthIncreases(depths))
 }
