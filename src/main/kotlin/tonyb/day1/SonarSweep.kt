@@ -1,27 +1,44 @@
 package tonyb.day1
 
 import java.nio.file.Files
-import java.util.Objects.nonNull
 import kotlin.io.path.Path
 
-fun countDepthIncreases(depths: Sequence<Int?>): Int =
+
+@JvmInline
+value class Depth(private val value: Int) {
+    operator fun plus(other: Depth): Depth = Depth(value + other.value)
+    operator fun compareTo(other: Depth): Int = value.compareTo(other.value)
+
+    constructor(s: String): this(s.toInt())
+
+    companion object {
+        val NULL = Depth(-1)
+    }
+}
+
+private val Depth.defined: Boolean
+    get() = this != Depth.NULL
+
+fun countDepthIncreases(depths: Sequence<Depth>): Int =
     countDepthIncreases(permute(depths.windowed(3) { it.sum() }))
 
+private fun List<Depth>.sum() = this.reduce(Depth::plus)
+
+
 @JvmName("countDepthIncreases_private")
-private fun countDepthIncreases(depths: Sequence<Pair<Int?, Int?>>): Int =
+private fun countDepthIncreases(depths: Sequence<Pair<Depth, Depth>>): Int =
     depths
-        .filter { (a, b) -> nonNull(a) && a!! < b!! } // Find the increases
+        .filter { (a, b) -> a.defined && a < b } // Find the increases
         .count()
 
 
-private fun permute(depths: Sequence<Int?>) = sequenceOf(null).plus(depths).zip(depths)
+private fun permute(depths: Sequence<Depth>): Sequence<Pair<Depth, Depth>> =
+    sequenceOf(Depth.NULL).plus(depths).zip(depths)
 
-
-private fun List<Int?>.sum() = this.reduce { a, b -> (a ?: 0) + (b ?: 0) }
 
 fun main() {
     val depths = Files.lines(Path("src/test/resources/day1/puzzle_input"))
-        .map { it.toInt() }
+        .map(::Depth)
         .toList()
 
     println(countDepthIncreases(depths.asSequence()))
