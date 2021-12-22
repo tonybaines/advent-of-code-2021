@@ -1,4 +1,4 @@
-package tonyb.day1
+package tonyb.sonarsweep
 
 import java.nio.file.Files
 import kotlin.io.path.Path

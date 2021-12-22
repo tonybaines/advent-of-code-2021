@@ -1,10 +1,10 @@
-package tonyb.day1
+package tonyb.sonarsweep
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.jupiter.api.Test
 
-object Spec {
+object DepthsSpec {
     @Test
     fun `counts the number of times the depth increases over a three-reading window`() {
         val depths = listOf(199, 200, 208, 210, 200, 207, 240, 269, 260, 263).map(::Depth)
