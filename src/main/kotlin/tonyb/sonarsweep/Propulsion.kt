@@ -28,7 +28,7 @@ enum class Direction {
     forward, up, down;
 }
 
-data class Movement(val direction: Direction, val distance: Int) {
+data class Movement(val direction: Direction, val amount: Int) {
     companion object {
         fun fromString(s: String): Movement {
             val (direction, distance) = s.split(" ")
@@ -40,13 +40,22 @@ data class Movement(val direction: Direction, val distance: Int) {
 @JvmName("propulsion_by_string")
 fun propulsion(movements: List<String>): Position = propulsion(movements.map { Movement.fromString(it) })
 
-fun propulsion(movements: List<Movement>): Position = movements.fold(Position.ZERO) { acc, move ->
-    when (move.direction) {
-        Direction.forward -> acc.forward(move.distance)
-        Direction.up -> acc.up(move.distance)
-        Direction.down -> acc.down(move.distance)
+private data class State(val aim: Int, val position: Position) {
+    companion object {
+        val ZERO = State(0, Position.ZERO)
     }
 }
+
+fun propulsion(movements: List<Movement>): Position = movements.fold(State.ZERO) { acc, move ->
+    when (move.direction) {
+        Direction.forward -> acc.copy(position = acc.position
+            .forward(move.amount)
+            .down(acc.aim * move.amount)
+        )
+        Direction.up -> acc.copy(aim = acc.aim - move.amount)
+        Direction.down -> acc.copy(aim = acc.aim + move.amount)
+    }
+}.position
 
 fun main() {
     val movements = Files.lines(Path("src/test/resources/day2/puzzle_input"))
