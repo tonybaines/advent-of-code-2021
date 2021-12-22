@@ -1,5 +1,8 @@
 package tonyb.sonarsweep
 
+import java.nio.file.Files
+import kotlin.io.path.Path
+
 
 @JvmInline
 value class Horizontal(val value: Int) {
@@ -14,6 +17,7 @@ data class Position(val depth: Depth, val horizontal: Horizontal) {
     fun forward(amount: Int): Position = this.copy(horizontal = this.horizontal + amount)
     fun down(amount: Int): Position = this.copy(depth = this.depth + amount)
     fun up(amount: Int): Position = this.copy(depth = this.depth - amount) // Just assume depth will never be negative!
+    fun multiplied(): Int = depth.value * horizontal.value
 
     companion object {
         val ZERO = Position(Depth.ZERO, Horizontal.ZERO)
@@ -44,3 +48,9 @@ fun propulsion(movements: List<Movement>): Position = movements.fold(Position.ZE
     }
 }
 
+fun main() {
+    val movements = Files.lines(Path("src/test/resources/day2/puzzle_input"))
+        .toList()
+
+    println(propulsion(movements).multiplied())
+}

@@ -5,7 +5,7 @@ import kotlin.io.path.Path
 
 
 @JvmInline
-value class Depth(private val value: Int) {
+value class Depth(internal val value: Int) {
     operator fun plus(other: Depth): Depth = Depth(value + other.value)
     operator fun plus(amount: Int): Depth = Depth(value + amount)
     operator fun minus(amount: Int): Depth = Depth(value - amount)

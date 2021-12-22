@@ -25,4 +25,21 @@ object PropulsionSpec {
     fun `going up again`() {
         assertThat(propulsion(listOf("down 5", "up 2")), equalTo(Position(Depth(3), Horizontal.ZERO)))
     }
+
+    @Test
+    fun `the spec input`() {
+        val position = propulsion(
+            listOf(
+                "forward 5",
+                "down 5",
+                "forward 8",
+                "up 3",
+                "down 8",
+                "forward 2",
+            )
+        )
+        assertThat(position, equalTo(Position(Depth(10), Horizontal(15))))
+
+        assertThat(position.multiplied(), equalTo(150))
+    }
 }
