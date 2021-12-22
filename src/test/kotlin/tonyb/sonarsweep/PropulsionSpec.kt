@@ -13,18 +13,18 @@ object PropulsionSpec {
 
     @Test
     fun `going forwards`() {
-        assertThat(propulsion(listOf("forward 5")), equalTo(Position(Depth.ZERO, Horizontal(5))))
+        assertThat(propulsion(listOf("forward 5")), equalTo(Position.of(0, 5)))
     }
 
     @Test
     fun `going down`() {
-        assertThat(propulsion(listOf("down 2", "forward 1")), equalTo(Position(Depth(2), Horizontal(1))))
+        assertThat(propulsion(listOf("down 2", "forward 1")), equalTo(Position.of(2, 1)))
     }
 
     @Test
     fun `going up again`() {
         assertThat(propulsion(listOf("down 5", "up 2", "forward 1")),
-            equalTo(Position(Depth(3), Horizontal(1))))
+            equalTo(Position.of(3,1)))
     }
 
     @Test
@@ -39,7 +39,7 @@ object PropulsionSpec {
                 "forward 2",
             )
         )
-        assertThat(position, equalTo(Position(Depth(60), Horizontal(15))))
+        assertThat(position, equalTo(Position.of(60,15)))
 
         assertThat(position.multiplied(), equalTo(900))
     }

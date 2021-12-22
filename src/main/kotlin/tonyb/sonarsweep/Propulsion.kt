@@ -44,6 +44,9 @@ data class Position(val depth: Depth, val horizontal: Horizontal) {
 
     companion object {
         val ZERO = Position(Depth.ZERO, Horizontal.ZERO)
+
+        fun of(depth: Int, horizontal: Int) =
+            Position(Depth(depth), Horizontal(horizontal))
     }
 }
 
